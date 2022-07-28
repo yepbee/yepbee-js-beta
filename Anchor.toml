@@ -1,0 +1,25 @@
+[features]
+seeds = false
+skip-lint = false
+# [programs.localnet]
+# retrip_js_v2 = "A32UkpXi27jDGwjAchSLpJarvpgsxtDhLB3dhMvqYwbZ"
+[programs.devnet]
+retrip_js_v2 = "2DDhBk2CUY2xvFscaLULV4QxLAjWaGxUbGRy4kBiwQ3T"
+
+[registry]
+url = "https://api.apr.dev"
+# url = "https://anchor.projectserum.com"
+
+[provider]
+# cluster = "localnet"
+# wallet = "/Users/just-do-halee/.config/solana/id.json"
+cluster = "devnet"
+wallet = "/Users/just-do-halee/solana-wallet/devnet.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+deploy = "anchor deploy"
+createMint = "solana-keygen new --outfile tests/.keys/.mint.json --force"
+createMainState = "solana-keygen new --outfile tests/.keys/.mainState.json --force"
+build = "cargo clean && anchor build && anchor keys list"
+start = "anchor run createMint && anchor run createMainState && anchor test"

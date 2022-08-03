@@ -10,11 +10,11 @@ mod payloads;
 mod instructions;
 use instructions::*;
 
-pub const PROGRAM_ID: &str = "2DDhBk2CUY2xvFscaLULV4QxLAjWaGxUbGRy4kBiwQ3T"; // #lib.rs
-declare_id!("2DDhBk2CUY2xvFscaLULV4QxLAjWaGxUbGRy4kBiwQ3T");
+pub const PROGRAM_ID: &str = "APDcLngZjQCDX5XyTMaw3H9ykwgyevmE9naXh5wXX3xg"; // #lib.rs
+declare_id!("APDcLngZjQCDX5XyTMaw3H9ykwgyevmE9naXh5wXX3xg");
 
 #[program]
-pub mod retrip_js_v2 {
+pub mod yepbee_js_beta {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, amount: u64) -> Result<()> {

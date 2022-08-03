@@ -2,9 +2,9 @@
 seeds = false
 skip-lint = false
 # [programs.localnet]
-# retrip_js_v2 = "A32UkpXi27jDGwjAchSLpJarvpgsxtDhLB3dhMvqYwbZ"
+# yepbee_js_beta = "APDcLngZjQCDX5XyTMaw3H9ykwgyevmE9naXh5wXX3xg"
 [programs.devnet]
-retrip_js_v2 = "2DDhBk2CUY2xvFscaLULV4QxLAjWaGxUbGRy4kBiwQ3T"
+yepbee_js_beta = "APDcLngZjQCDX5XyTMaw3H9ykwgyevmE9naXh5wXX3xg"
 
 [registry]
 url = "https://api.apr.dev"

@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import {
-  Keypair,
   masterKeypair,
   masterPubkey,
   program,
@@ -20,7 +19,7 @@ import {
   uint,
 } from "./utils";
 
-describe("beeus", () => {
+describe("yepbee-js-beta", () => {
   let initialAmount: number;
   let minted: ProgramMintInfo;
   let masterTokenAccount: PublicKey;

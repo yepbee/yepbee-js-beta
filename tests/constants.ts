@@ -1,7 +1,7 @@
 import * as anchor from "@project-serum/anchor";
 export { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { AnchorProvider, Program, Wallet } from "@project-serum/anchor";
-import { RetripJsV2 } from "../target/types/retrip_js_v2";
+import { YepbeeJsBeta } from "../target/types/yepbee_js_beta";
 
 anchor.setProvider(anchor.AnchorProvider.env());
 
@@ -10,7 +10,7 @@ export type Keypair = anchor.web3.Keypair;
 export const PublicKey = anchor.web3.PublicKey;
 export type PublicKey = anchor.web3.PublicKey;
 
-export const program = anchor.workspace.RetripJsV2 as Program<RetripJsV2>;
+export const program = anchor.workspace.YepbeeJsBeta as Program<YepbeeJsBeta>;
 export const connection = program.provider.connection;
 
 export const PROGRAM_ID = program.programId;

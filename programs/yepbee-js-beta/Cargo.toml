@@ -1,12 +1,12 @@
 [package]
-name = "retrip-js-v2"
+name = "yepbee-js-beta"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "retrip_js_v2"
+name = "yepbee_js_beta"
 
 [features]
 no-entrypoint = []

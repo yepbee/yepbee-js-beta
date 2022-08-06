@@ -2,9 +2,9 @@
 seeds = false
 skip-lint = false
 # [programs.localnet]
-# yepbee_js_beta = "7j1g9t47RPQtfhxFp4YNmQan64cJjHBdjKMPovQZWVjb"
+# yepbee_js_beta = "DP1sB9CwSragAmn5pNcmNhsmC3iRhXTne8vQmUbhbkM9"
 [programs.devnet]
-yepbee_js_beta = "7j1g9t47RPQtfhxFp4YNmQan64cJjHBdjKMPovQZWVjb"
+yepbee_js_beta = "DP1sB9CwSragAmn5pNcmNhsmC3iRhXTne8vQmUbhbkM9"
 
 [registry]
 url = "https://api.apr.dev"

@@ -71,7 +71,7 @@ impl<'info> CreateUser<'info> {
         let user_state = self
             .main_state
             .as_program_token_account_info()
-            .into_user_state(user_index, user_pubkey);
+            .into_user_state(user_index, &user_pubkey);
 
         self.user_id_to_user_state.set_inner(user_state);
 

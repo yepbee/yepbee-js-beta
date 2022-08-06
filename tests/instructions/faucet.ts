@@ -22,9 +22,9 @@ export async function faucet() {
       mainState: mainStateKeypair.publicKey,
       programMint,
       programTokenAccount,
-      payerTokenAccount: masterTokenAccount,
       pubkeyToUserId: masterPubkeyToUserId,
       userIdToUserState: masterUserIdToUserState,
+      payerTokenAccount: masterTokenAccount,
     })
     .rpc();
   console.log("succeed!");

@@ -10,7 +10,7 @@ pub fn find_bump(seeds: &[&[u8]]) -> u8 {
     find_program_address(seeds).1
 }
 #[inline]
-pub fn find_token_account(mint_address: Pubkey, user_address: Pubkey) -> (Pubkey, u8) {
+pub fn find_token_account(mint_address: &Pubkey, user_address: &Pubkey) -> (Pubkey, u8) {
     find_program_address(&[mint_address.as_ref(), user_address.as_ref()])
 }
 

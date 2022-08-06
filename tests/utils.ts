@@ -17,6 +17,7 @@ export async function createProgramMint(
   decimals: number,
   _mintKeypair: anchor.web3.Keypair = mintKeypair
 ): Promise<ProgramMintInfo> {
+  console.log("creating program mint...");
   const [programPDA, bump] = PublicKey.findProgramAddressSync(
     [_mintKeypair.publicKey.toBuffer()],
     PROGRAM_ID
@@ -30,6 +31,7 @@ export async function createProgramMint(
     _mintKeypair
   );
   // console.log("Mint Address: ", confirm.toString());
+  console.log("succeed!");
   return {
     programMint: _mintKeypair.publicKey,
     programTokenAccount: programPDA,

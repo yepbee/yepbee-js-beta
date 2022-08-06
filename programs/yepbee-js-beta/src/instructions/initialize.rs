@@ -30,10 +30,11 @@ pub struct Initialize<'info> {
 impl<'info> Initialize<'info> {
     #[inline]
     fn new_main_state(&self) -> MainState {
+        let program_id = PROGRAM_ID.parse::<Pubkey>().unwrap();
         let program_mint = self.program_mint.key();
         let program_token_account = self.program_token_account.key();
         let creator = self.payer.key();
-        let program_token_account_bump = find_bump(&[program_mint.as_ref()]);
+        let program_token_account_bump = find_bump(&[program_mint.as_ref()], &program_id);
 
         MainState::new(
             &TokenAccountInfo::new(

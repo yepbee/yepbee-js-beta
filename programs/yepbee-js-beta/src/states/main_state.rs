@@ -3,6 +3,7 @@ use crate::common::*;
 #[account]
 #[derive(Default)]
 pub struct MainState {
+    program_id: Pubkey, // singleton
     total_user_supply: u128,
     total_nft_supply: u128,
     white_list: Whitelist,
@@ -10,7 +11,20 @@ pub struct MainState {
 }
 impl MainState {
     // pub const ACCOUNT_LEN: usize = 32 + 1 + 1 + 4 + 4 + 32 + 1 + 8;
-    pub const LEN: usize = 16 + 16 + Whitelist::LEN + TokenAccountInfo::LEN; //state::Mint::LEN + state::Account::LEN + 2 * Self::ACCOUNT_LEN;
+    pub const LEN: usize = 32 + 16 + 16 + Whitelist::LEN + TokenAccountInfo::LEN; //state::Mint::LEN + state::Account::LEN + 2 * Self::ACCOUNT_LEN;
+
+    #[inline]
+    pub fn find_pda(&self, seeds: &[&[u8]]) -> (Pubkey, u8) {
+        find_program_address(seeds, &self.program_id)
+    }
+    #[inline]
+    pub fn find_bump(&self, seeds: &[&[u8]]) -> u8 {
+        self.find_pda(seeds).1
+    }
+    #[inline]
+    pub fn find_token_account(&self, mint_address: &Pubkey, user_address: &Pubkey) -> (Pubkey, u8) {
+        self.find_pda(&[mint_address.as_ref(), user_address.as_ref()])
+    }
 
     #[inline]
     pub fn new(program_token_account: &TokenAccountInfo, payer: &Signer) -> MainState {
@@ -25,6 +39,7 @@ impl MainState {
     ) -> MainState {
         let initial_owner = payer.key();
         msg!("initial whitelist: {initial_owner}");
+        self.program_id = PROGRAM_ID.parse::<Pubkey>().unwrap();
         self.white_list.push_keys(&[initial_owner]);
         self.program_token_account_info = program_token_account_info.clone();
         self.total_user_supply = 0;
@@ -47,6 +62,10 @@ impl MainState {
         }
     }
 
+    #[inline]
+    pub fn as_program_id(&self) -> &Pubkey {
+        &self.program_id
+    }
     #[inline]
     pub fn as_whitelist(&self) -> &Whitelist {
         &self.white_list

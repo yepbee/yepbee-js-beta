@@ -21,9 +21,14 @@ impl TokenAccountInfo {
         nft_address: &Pubkey,
         initial_owner: &Pubkey,
     ) -> NftState {
-        let pubkey_to_nft_id_bump = find_bump(&[b"nft_state-pubkey", nft_address.as_ref()]);
-        let nft_id_to_nft_state_bump =
-            find_bump(&[b"nft_state-id", nft_index.to_string().as_bytes()]);
+        let program_id = PROGRAM_ID.parse::<Pubkey>().unwrap();
+
+        let pubkey_to_nft_id_bump =
+            find_bump(&[b"nft_state-pubkey", nft_address.as_ref()], &program_id);
+        let nft_id_to_nft_state_bump = find_bump(
+            &[b"nft_state-id", nft_index.to_string().as_bytes()],
+            &program_id,
+        );
 
         NftState {
             index: nft_index,
@@ -37,11 +42,17 @@ impl TokenAccountInfo {
     }
     #[inline]
     pub fn into_user_state(&self, user_index: u128, user_address: &Pubkey) -> UserState {
-        let (token_account, bump) = find_token_account(&self.mint_address, &user_address);
+        let program_id = PROGRAM_ID.parse::<Pubkey>().unwrap();
 
-        let pubkey_to_user_id_bump = find_bump(&[b"user_state-pubkey", user_address.as_ref()]);
-        let user_id_to_user_state_bump =
-            find_bump(&[b"user_state-id", user_index.to_string().as_bytes()]);
+        let (token_account, bump) =
+            find_token_account(&self.mint_address, &user_address, &program_id);
+
+        let pubkey_to_user_id_bump =
+            find_bump(&[b"user_state-pubkey", user_address.as_ref()], &program_id);
+        let user_id_to_user_state_bump = find_bump(
+            &[b"user_state-id", user_index.to_string().as_bytes()],
+            &program_id,
+        );
 
         UserState {
             index: user_index,

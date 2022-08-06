@@ -18,13 +18,13 @@ export async function faucet() {
     .accounts({
       rent: SYSVAR_RENT_PUBKEY,
       tokenProgram: TOKEN_PROGRAM_ID,
-      payer: masterKeypair.publicKey,
-      mainState: mainStateKeypair.publicKey,
       programMint,
       programTokenAccount,
-      pubkeyToUserId: masterPubkeyToUserId,
-      userIdToUserState: masterUserIdToUserState,
+      payer: masterKeypair.publicKey,
+      payerPubkeyToUserId: masterPubkeyToUserId,
+      payerUserIdToUserState: masterUserIdToUserState,
       payerTokenAccount: masterTokenAccount,
+      mainState: mainStateKeypair.publicKey,
     })
     .rpc();
   console.log("succeed!");

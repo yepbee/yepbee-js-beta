@@ -4,9 +4,12 @@ import {
   connection,
   masterKeypair,
   mintKeypair,
+  program,
   PROGRAM_ID,
   PublicKey,
 } from "./constants";
+
+export type UINT = anchor.BN;
 
 export type ProgramMintInfo = {
   programMint: PublicKey;
@@ -62,12 +65,30 @@ export function findUserStateByUserId(id: anchor.BN) {
   return findPDA([Buffer.from("user_state-id"), Buffer.from(id.toString())]);
 }
 
-export async function getTokenBalance(tokenAccount: PublicKey) {
-  return parseInt(
+export async function getTokenBalance(tokenAccount: PublicKey): Promise<UINT> {
+  return uint(
     (await connection.getTokenAccountBalance(tokenAccount)).value.amount
   );
 }
 
 export const uint = (
   amount: string | number | anchor.BN | Buffer | Uint8Array | number[]
-) => new anchor.BN(amount);
+): UINT => new anchor.BN(amount);
+
+export async function findUserIdAndUserState(userPubkey: PublicKey) {
+  const userIdPubkey = findUserIdByPubkey(userPubkey)[0];
+  const userId = (await program.account.userId.fetch(userIdPubkey)).id;
+
+  const userStatePubkey = findUserStateByUserId(userId)[0];
+  const userState = await program.account.userState.fetch(userStatePubkey);
+
+  console.log(`* findUserIdAndUserState:\nuserId(${userId})`);
+  console.dir(userState, { depth: null });
+
+  return {
+    userIdPubkey,
+    userStatePubkey,
+    userId,
+    userState,
+  };
+}

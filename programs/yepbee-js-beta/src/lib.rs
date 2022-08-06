@@ -10,8 +10,8 @@ mod payloads;
 mod instructions;
 use instructions::*;
 
-pub const PROGRAM_ID: &str = "DfugLuVhz3nXbECRhUQgTpGFk32h2BHvhf2RmZyJjS6M"; // #lib.rs
-declare_id!("DfugLuVhz3nXbECRhUQgTpGFk32h2BHvhf2RmZyJjS6M");
+pub const PROGRAM_ID: &str = "4AfBgVPfr4NNXv58NW2qUa3LoqFnBZ8CPqJSMsUDEYRb"; // #lib.rs
+declare_id!("4AfBgVPfr4NNXv58NW2qUa3LoqFnBZ8CPqJSMsUDEYRb");
 
 #[program]
 pub mod yepbee_js_beta {
@@ -31,5 +31,11 @@ pub mod yepbee_js_beta {
     }
     pub fn faucet(ctx: Context<Faucet>) -> Result<()> {
         ctx.accounts.run()
+    }
+    // pub fn transfer_system_nft(ctx: Context<Faucet>) -> Result<()> {
+    //     ctx.accounts.run()
+    // }
+    pub fn transfer_system_token(ctx: Context<TransferSystemToken>, amount: u64) -> Result<()> {
+        ctx.accounts.run(amount)
     }
 }

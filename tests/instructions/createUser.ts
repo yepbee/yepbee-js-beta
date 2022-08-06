@@ -27,7 +27,7 @@ export async function createUser(userPubkey: PublicKey) {
   const pubkeyToUserId = findUserIdByPubkey(userPubkey)[0];
   const userIdToUserState = findUserStateByUserId(newUserId)[0];
   const userTokenAccount = findUserTokenAccount(userPubkey)[0];
-  console.log("creating user state...");
+  console.log(`creating user state... ${userPubkey}`);
   const res = program.methods
     .createUser()
     .accounts({

@@ -52,24 +52,23 @@ pub struct Faucet<'info> {
 impl<'info> Faucet<'info> {
     #[inline]
     pub fn run(&mut self) -> Result<()> {
-        // self.main_state.validate_signer(&self.payer)?; // whitelist only
+        self.main_state.validate_signer(&self.payer)?; // whitelist only
 
-        // let seeds = self.user_id_to_user_state.token_account_info.as_seeds();
-        // let signer = [&seeds[..]];
+        let seeds = self.main_state.as_program_token_account_info().as_seeds();
+        let signer = [&seeds[..]];
 
-        // let cpi_transfer = CpiContext::new_with_signer(
-        //     self.token_program.to_account_info(),
-        //     spl::token::Transfer {
-        //         from: self.program_token_account.to_account_info(),
-        //         authority: self.program_token_account.to_account_info(),
-        //         to: self.payer_token_account.to_account_info(),
-        //     },
-        //     &signer,
-        // );
+        let cpi_transfer = CpiContext::new_with_signer(
+            self.token_program.to_account_info(),
+            spl::token::Transfer {
+                from: self.program_token_account.to_account_info(),
+                authority: self.program_token_account.to_account_info(),
+                to: self.payer_token_account.to_account_info(),
+            },
+            &signer,
+        );
 
-        // let current_balance = spl::token::accessor::amount(&self.token_program.to_account_info())?;
+        let current_balance = spl::token::accessor::amount(&self.token_program.to_account_info())?;
 
-        // spl::token::transfer(cpi_transfer, current_balance / 1000) // airdrop
-        Ok(())
+        spl::token::transfer(cpi_transfer, current_balance / 100) // airdrop
     }
 }

@@ -18,8 +18,8 @@ impl TokenAccountInfo {
     pub fn into_nft_state(
         &self,
         nft_index: u128,
-        nft_address: Pubkey,
-        initial_owner: Pubkey,
+        nft_address: &Pubkey,
+        initial_owner: &Pubkey,
     ) -> NftState {
         let pubkey_to_nft_id_bump = find_bump(&[b"nft_state-pubkey", nft_address.as_ref()]);
         let nft_id_to_nft_state_bump =
@@ -27,7 +27,7 @@ impl TokenAccountInfo {
 
         NftState {
             index: nft_index,
-            pubkey: nft_address,
+            pubkey: nft_address.key(),
             likes: 0,
             stakes: 0,
             creator: initial_owner.key(),
@@ -36,8 +36,8 @@ impl TokenAccountInfo {
         }
     }
     #[inline]
-    pub fn into_user_state(&self, user_index: u128, user_address: Pubkey) -> UserState {
-        let (token_account, bump) = find_token_account(self.mint_address, user_address);
+    pub fn into_user_state(&self, user_index: u128, user_address: &Pubkey) -> UserState {
+        let (token_account, bump) = find_token_account(&self.mint_address, &user_address);
 
         let pubkey_to_user_id_bump = find_bump(&[b"user_state-pubkey", user_address.as_ref()]);
         let user_id_to_user_state_bump =
@@ -45,7 +45,7 @@ impl TokenAccountInfo {
 
         UserState {
             index: user_index,
-            pubkey: user_address,
+            pubkey: user_address.key(),
             token_account_info: TokenAccountInfo {
                 mint_address: self.mint_address,
                 token_account,

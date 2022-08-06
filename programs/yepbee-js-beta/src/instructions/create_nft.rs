@@ -178,7 +178,7 @@ impl<'info> CreateNft<'info> {
         let nft_state = self
             .main_state
             .as_program_token_account_info()
-            .into_nft_state(nft_index, nft_pubkey, initial_owner);
+            .into_nft_state(nft_index, &nft_pubkey, &initial_owner);
 
         self.nft_id_to_nft_state.set_inner(nft_state);
 

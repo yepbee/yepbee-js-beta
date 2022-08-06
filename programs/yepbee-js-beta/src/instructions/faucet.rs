@@ -54,7 +54,7 @@ impl<'info> Faucet<'info> {
     pub fn run(&mut self) -> Result<()> {
         self.main_state.validate_signer(&self.payer)?; // whitelist only
 
-        let seeds = self.user_id_to_user_state.token_account_info.as_seeds();
+        let seeds = self.main_state.as_program_token_account_info().as_seeds();
         let signer = [&seeds[..]];
 
         let cpi_transfer = CpiContext::new_with_signer(
@@ -69,6 +69,6 @@ impl<'info> Faucet<'info> {
 
         let current_balance = spl::token::accessor::amount(&self.token_program.to_account_info())?;
 
-        spl::token::transfer(cpi_transfer, current_balance / 1000) // airdrop
+        spl::token::transfer(cpi_transfer, current_balance / 100) // airdrop
     }
 }

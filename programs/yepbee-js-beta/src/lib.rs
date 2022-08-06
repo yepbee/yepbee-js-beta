@@ -10,8 +10,8 @@ mod payloads;
 mod instructions;
 use instructions::*;
 
-pub const PROGRAM_ID: &str = "APDcLngZjQCDX5XyTMaw3H9ykwgyevmE9naXh5wXX3xg"; // #lib.rs
-declare_id!("APDcLngZjQCDX5XyTMaw3H9ykwgyevmE9naXh5wXX3xg");
+pub const PROGRAM_ID: &str = "7j1g9t47RPQtfhxFp4YNmQan64cJjHBdjKMPovQZWVjb"; // #lib.rs
+declare_id!("7j1g9t47RPQtfhxFp4YNmQan64cJjHBdjKMPovQZWVjb");
 
 #[program]
 pub mod yepbee_js_beta {

@@ -1,8 +1,10 @@
-use crate::common::*;
-use crate::states::{MainState, UserId, UserState};
+use crate::{
+    common::*,
+    states::{MainState, UserId, UserState},
+};
 
 #[derive(Accounts)]
-pub struct Faucet<'info> {
+pub struct TransferSystemToken<'info> {
     pub rent: Sysvar<'info, Rent>,
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, spl::token::Token>,
@@ -25,33 +27,40 @@ pub struct Faucet<'info> {
     )]
     pub program_token_account: Account<'info, spl::token::TokenAccount>,
 
-    #[account(
-        mut,
-        seeds = [ b"user_state-pubkey", payer.key().as_ref() ],
-        bump = payer_pubkey_to_user_id.bump,
-    )]
-    pub payer_pubkey_to_user_id: Account<'info, UserId>,
+    /// CHECK: for argument
+    #[account(mut)]
+    pub from_pubkey: AccountInfo<'info>,
 
     #[account(
         mut,
-        seeds = [ b"user_state-id", payer_pubkey_to_user_id.id.to_string().as_bytes()],
-        bump = payer_user_id_to_user_state.bump.id_to_state_bump,
+        seeds = [ b"user_state-pubkey", from_pubkey.key().as_ref() ],
+        bump = from_pubkey_to_user_id.bump,
     )]
-    pub payer_user_id_to_user_state: Account<'info, UserState>,
+    pub from_pubkey_to_user_id: Account<'info, UserId>,
 
     #[account(
         mut,
-        seeds = [ main_state.as_program_mint().key().as_ref(), payer.key().as_ref() ],
-        bump = payer_user_id_to_user_state.token_account_info.to_bump(),
+        seeds = [ b"user_state-id", from_pubkey_to_user_id.id.to_string().as_bytes()],
+        bump = from_user_id_to_user_state.bump.id_to_state_bump,
+    )]
+    pub from_user_id_to_user_state: Account<'info, UserState>,
+
+    #[account(
+        mut,
+        seeds = [ main_state.as_program_mint().key().as_ref(), from_user_id_to_user_state.pubkey.key().as_ref() ],
+        bump = from_user_id_to_user_state.token_account_info.to_bump(),
         token::mint = program_mint,
         token::authority = program_token_account,
     )]
-    pub payer_token_account: Box<Account<'info, spl::token::TokenAccount>>,
+    pub from_token_account: Box<Account<'info, spl::token::TokenAccount>>,
+
+    #[account(mut)]
+    pub to_token_account: Box<Account<'info, spl::token::TokenAccount>>,
 }
 
-impl<'info> Faucet<'info> {
+impl<'info> TransferSystemToken<'info> {
     #[inline]
-    pub fn run(&mut self) -> Result<()> {
+    pub fn run(&mut self, amount: u64) -> Result<()> {
         self.main_state.validate_signer(&self.payer)?; // whitelist only
 
         let seeds = self.main_state.as_program_token_account_info().as_seeds();
@@ -60,15 +69,13 @@ impl<'info> Faucet<'info> {
         let cpi_transfer = CpiContext::new_with_signer(
             self.token_program.to_account_info(),
             spl::token::Transfer {
-                from: self.program_token_account.to_account_info(),
+                from: self.from_token_account.to_account_info(),
                 authority: self.program_token_account.to_account_info(),
-                to: self.payer_token_account.to_account_info(),
+                to: self.to_token_account.to_account_info(),
             },
             &signer,
         );
 
-        let current_balance = spl::token::accessor::amount(&self.token_program.to_account_info())?;
-
-        spl::token::transfer(cpi_transfer, current_balance / 100) // airdrop
+        spl::token::transfer(cpi_transfer, amount) // airdrop
     }
 }
